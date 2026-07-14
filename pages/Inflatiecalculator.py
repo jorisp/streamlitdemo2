@@ -2,45 +2,52 @@ import pandas as pd
 from pathlib import Path
 import streamlit as st
 
-st.header('Inflatiecalculator met Belgische CPI gegevens')
+st.header('Inflationcalculator with Belgian CPI data')
 
 CPI_DATA_URL = 'https://raw.githubusercontent.com/jorisp/tradingnotebooks/master/data/static_inflationcalc_be_2025.csv'
 #CPI_DATA_SOURCE = Path(__file__).parent/ 'data/static_inflationcalc_be_2025.csv'
 
 st.markdown(
     """
-    Deze tool gebruikt een csv bestand met de CPI-dataset die automatisch wordt ingeladen van mijn GitHub repo.
+    This tool uses a CSV file with Belgian CPI data downloaded from
     https://www.github.com/jorisp/tradingnotebooks/blob/master/data/static_inflationcalc_be_2025.csv
-    De berekening is als volgt:
-    - Nieuwe kost eind jaar: `Bedrag eind jaar = bedrag start jaar * (HICP2 / HICP1)`
-    - Procentuele verandering: `((Cost2 - Cost1) / Cost1) * 100`
+    
+    For more info see <https://jopxfin.blogspot.com/2025/04/inflatie-in-belgie.html> (Dutch post)
+    
+    How the calculation works:
+    - Amount end year: `Amount end year = amount start year * (HICP2 / HICP1)`
+    - Percentage change: `((Amount2 - Amount1) / Amount1) * 100` with Amount1 = amount start year and Amount2 = amount end year
     """
 )
 
 # --- Data laden ---
-try:
-    df = pd.read_csv(CPI_DATA_URL )
-except Exception as e:
-    st.error(f"Kon de CPI-data niet laden: {e}")
-    st.stop()
+@st.cache_data
+def load_cpi_data():
+    try:
+        df = pd.read_csv(CPI_DATA_URL )
+        return df
+    except Exception as e:
+        st.error(f"Could not load CPI data: {e}")
+        st.stop()
 
-# Validatie
-if not {"year", "cpi"}.issubset(df.columns):
-    st.error("CSV moet kolommen 'year' en 'cpi' bevatten.")
-    st.stop()
+    # Validation: Check if required columns are present
+    if not {"year", "cpi"}.issubset(df.columns):
+        st.error("CSV file needs to contain columns 'year' and 'cpi'.")
+        st.stop()
 
+df = load_cpi_data()
 df = df.sort_values("year")
 
-st.subheader("Ingeladen CPI-data")
+st.subheader("Loaded CPI-data")
 st.write(df)
 
 # --- Inputvelden ---
-amount = st.number_input("Bedrag in startjaar", min_value=100, value=100,step=100)
-start_year = st.selectbox("Startjaar", df["year"])
-end_year = st.selectbox("Eindjaar", df["year"])
+amount = st.number_input("Amount in start year", min_value=100, value=100,step=100)
+start_year = st.selectbox("Start year", df["year"])
+end_year = st.selectbox("End year", df["year"])
 
 # --- Berekening ---
-if st.button("Bereken inflatie"):
+if st.button("Calculate inflation impact"):
     cpi1 = df.loc[df["year"] == start_year, "cpi"].values[0]
     cpi2 = df.loc[df["year"] == end_year, "cpi"].values[0]
 
@@ -53,11 +60,11 @@ if st.button("Bereken inflatie"):
     else:
         avg_annual = 0
 
-    st.subheader("Resultaten")
-    st.write(f"**Bedrag in {start_year}:** {amount:,.2f}")
-    st.write(f"**Bedrag in {end_year}:** {cost2:,.2f}")
-    st.write(f"**Procentuele verandering:** {pct_change:.2f}%")
-    st.write(f"**Aantal jaren:** {num_years}")
-    st.write(f"**Gemiddelde jaarlijkse inflatie:** {avg_annual:.2f}%")
+    st.subheader("Results")
+    st.write(f"**Amount in {start_year}:** {amount:,.2f}")
+    st.write(f"**Amount in {end_year}:** {cost2:,.2f}")
+    st.write(f"**Percentage change:** {pct_change:.2f}%")
+    st.write(f"**Number of years:** {num_years}")
+    st.write(f"**Average annual inflation:** {avg_annual:.2f}%")
     st.write(f"**CPI {start_year}:** {cpi1}")
     st.write(f"**CPI {end_year}:** {cpi2}")
