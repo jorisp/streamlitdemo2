@@ -53,6 +53,7 @@ for val, color in zip(values, colors):
     plt.text(years[-1], val[-1], f'{val[-1]:,.0f}€', color=color, ha='right', va='center', fontsize=10)
 
 st.pyplot(plt)
+plt.close()  # Close the plot to free memory
 
 # --- Final values ---
 st.subheader("Final Portfolio Values")
