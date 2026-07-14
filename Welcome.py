@@ -6,10 +6,10 @@ st.title("Personal Finance calculators")
 
 st.write(
     "Use this page to learn what each app page does and quickly jump to the desired tool. "
-    "If the links do not jump directly, use the sidebar to select the page."
+    "Use the sidebar to navigate between the different tools. "
 )
 
 st.markdown(
-    "- **Compound Growth Visualizer** — compare the future values of an investment over time for three different annual return rates. \n"
-    "- **Inflatiecalculator** — calculate inflation-adjusted values using Belgian CPI data. "
+    "- **Compounding** — compound growth visualiser, which compares the future values of an investment over time for three different annual return rates. \n"
+    "- **Inflatiecalculator** — calculates the impact of  inflation in Belgium based on the Belgian Consumption Price Index (CPI) data. For more info see <https://jopxfin.blogspot.com/2025/04/inflatie-in-belgie.html> (Dutch post) "
 )
