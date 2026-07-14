@@ -9,7 +9,7 @@ CPI_DATA_URL = 'https://raw.githubusercontent.com/jorisp/tradingnotebooks/master
 
 st.markdown(
     """
-    This tool uses a CSV file with Belgian CPI data downloaded from
+    This tool uses a CSV file with Belgian Consumption Price Index (CPI) data downloaded from
     https://www.github.com/jorisp/tradingnotebooks/blob/master/data/static_inflationcalc_be_2025.csv
     
     For more info see <https://jopxfin.blogspot.com/2025/04/inflatie-in-belgie.html> (Dutch post)
