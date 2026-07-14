@@ -11,6 +11,6 @@ st.write(
 
 st.markdown(
     "- **Compounding** — compound growth visualiser, which compares the future values of an investment over time for three different annual return rates. \n"
-    "- **Inflatiecalculator** — calculates the impact of  inflation in Belgium based on the Belgian Consumption Price Index (CPI) data. For more info see <https://jopxfin.blogspot.com/2025/04/inflatie-in-belgie.html> (Dutch post) "
+    "- **Inflatiecalculator** — calculates the impact of  inflation in Belgium based on the Belgian Consumption Price Index (CPI) data. For more info see <https://jopxfin.blogspot.com/2025/04/inflatie-in-belgie.html> (Dutch post) \n "
     "- **Compounding with periodic contributions** — similar to the compound growth visualiser, but allows for periodic contributions (monthly, quarterly, yearly) and different contribution timings (beginning or end of period). \n"
 )
